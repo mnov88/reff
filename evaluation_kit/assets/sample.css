@@ -1,0 +1,66 @@
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+    letter-spacing: 0.02rem;
+}
+
+.container-fluid {
+    max-width: 1400px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.btn-parse {
+    margin-top: 15px;
+}
+
+.btn-clear {
+    margin-top: 15px;
+}
+
+.ref2link-source, .ref2link-target {
+    width: 100%;
+    height: 90vh;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.ref2link-target {
+    overflow-y: scroll;
+    background-color: #fafafa;
+    white-space: pre-wrap;
+}
+
+.table {
+    overflow: hidden;
+}
+
+.table .table-header {
+    background-color: #EFEFEF;
+}
+
+.ref2link-generated {
+    color: blue;
+}
+
+.ref2link-generated:hover {
+    color: #004494;
+}
+
+.ref2link-tooltip {
+    max-width: initial !important;
+    min-width: 25rem;
+}
+
+.ref2link-tooltip .label {
+    color: #333;
+}
+
+.ref2link-tooltip table {
+    max-width: 42rem;
+}

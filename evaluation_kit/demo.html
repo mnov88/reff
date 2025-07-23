@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ref2link demo page</title>
+    <script type="text/javascript" src="assets/es6-shim.min.js"></script><!-- polyfill -->
+    <script type="text/javascript" src="assets/es7-object-polyfill.browser.js"></script><!-- polyfill -->
+    <script type="text/javascript" src="assets/jquery.min.js"></script><!-- mandatory JQuery dependency-->
+    <link rel="stylesheet" href="assets/bootstrap.min.css" type="text/css"><!-- tooltip styling -->
+    <link rel="stylesheet" href="assets/sample.css" type="text/css">
+    <script type="text/javascript" src="assets/ref2link.bundle.js"></script><!-- ref2link dependency -->
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h3>Sample text</h3>
+                    </div>
+                    <div class="col-xs-4">
+                        <a class="btn btn-success btn-md btn-parse pull-right">Parse &raquo;</a>
+                        <a class="btn btn-cancel btn-md btn-clear pull-right">Clear</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <h3>Text parsed by Ref2Link</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <textarea class="ref2link-source"
+                    placeholder="Type or paste your multilingual EU legal references here...">
+#EU law
+
+(BG) членове 14, 15 и 16 от Регламент (ЕС) 2018/1725 
+(ES) directiva (UE) 2015/2366 
+(CS) nařízení (EU, Euratom) 2018/1046 a rozhodnutí č. 1082/2013/EU 
+(DA) gennemførelsesforordning (EU) nr. 809/2014, (EU) nr. 180/2014, (EU) nr. 181/2014, (EU) 2017/892, (EU) 2016/1150, (EU) 2018/274, (EU) 2017/39, (EU) 2015/1368 og (EU) 2016/1240
+(DE) Delegierte Richtlinie (EU) 2018/736 
+(ET) määruse (EL) 2018/1725 artikli 25 lõigetega 6, 7 ja 8
+(EL) παράρτημα V της οδηγίας 2005/36/ΕΚ
+(EN) Directives 2014/23/EU, 2014/24/EU and 2014/25/EU
+(FR) article 260 TFUE
+(GA) bpointe (b) d'Airteagal 46(4) de Rialachán (AE) Uimh. 1307/2013
+(HR) članaka 75., 78., 79. i 80. Uredbe (EZ) br. 1186/2009
+(IT) articolo 13, paragrafo 1, e all'articolo 22, paragrafo 1, del regolamento di esecuzione (UE) n. 809/2014
+(LV) Direktīvas 2002/65/EK, 2009/110/EK un 2013/36/ES un Regulu (ES) Nr. 1093/2010
+(LT) rekomendacija (ES) 2017/146
+(HU) 2008/977/IB kerethatározata
+(MT) Artikolu 15(2) tar-Regolament ta' Implimentazzjoni (UE) Nru 809/2014
+(NL) PB L 311 van 14.11.2002
+(PL) art. 19 ust. 5, art. 38 ust. 1 lit. a), art. 42 lit. a) i art. 44 ust. 6 lit. a) rozporządzenia (UE) 2018/1240
+(PT) anexo V da Diretiva 2005/36/CE
+(RO) articolul 29 alineatul (1) și la articolul 31 din Directiva 2005/94/CE
+(SK) článku 22 ods. 1 vykonávacieho nariadenia (EÚ) č. 809/2014
+(SL) UL L 292, 10.11.2009, str. 5.
+(FI) Direktiivit 2002/65/EY, 2009/110/EY ja 2013/36/EU sekä asetus (EU) N:o 1093/2010
+(SV) bilagorna II och III till Europaparlamentets och rådets förordning (EG) nr 396/2005
+
+# CELEX id
+62003CV0001
+
+#EU case
+C-12/15
+
+#ECLI EU and MS case law
+ECLI:EU:C:2006:81
+EU:C:2009:475, paragraph 19
+ECLI:BE:CASS:2018:ARR.20180910.2
+ECLI:BG:DC180:2018:20180100317.001
+ECLI:CZ:NS:2012:6.TDO.1416.2012.1
+ECLI:DE:BAG:2015:070115.B.10AZB109.14.0
+ECLI:EL:COS:2013:0425A1673.09ED1028
+ECLI:ES:TSJCL:2011:782
+ECLI:FR:CC:2012:2012.270.QPC
+ECLI:FI:KKO:2016:1
+ECLI:NL:HR:2016:764
+ECLI:PT:TRE:2018:3996.16.7T8STB.E1.FE
+ECLI:SI:UPRS:2018:I.U.2437.2017.6
+62003CV0001
+
+#ELI MS law
+(ES) Ley 39/2015, de 1 de octubre
+(FI) laissa (748/2012)
+(FR) LOI n° 2017-257 du 28 février 2017
+(DK) LBK nr 23 af 04/01/2017
+(IE) Act 2014 (No. 38)
+(PL) Dz. U. z 2019 r. poz. 1461
+(PT) Decreto-Lei n.º 111/2017, de 31 de agosto
+
+            </textarea>
+            </div>
+            <div class="col-xs-6">
+                <div class="ref2link-target"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function parse() {
+            $('.ref2link-target').html($('.ref2link-source').val()).parseDeferred(); // call ref2link async parsing method
+        }
+
+        function clear() {
+            $('.ref2link-source').val('');
+            $('.ref2link-target').html('');
+        }
+
+        (function ($) {
+            $(".btn-parse").click(function (e) {
+                parse();
+            });
+            $(".btn-clear").click(function (e) {
+                clear();
+            });
+
+            R2L.setFilter('environments', ['ES', 'FI', 'FR', 'IE', 'DK', 'PL', 'PT']);
+            R2L.setOptions({ linkeddata: false });
+            parse();
+        })(jQuery);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+.ref2link-tooltip {
+	position: absolute;
+	display: block;
+    background: white;
+    border: 1px solid #eee;
+	visibility: visible;
+	padding: 2px;
+	color: #333;
+	font-size: 1.1rem;
+	cursor: default;
+	overflow: hidden;
+    min-width: 16rem;
+    max-width: 30rem;
+	-webkit-box-shadow: 10px 10px 5px -5px rgba(28, 28, 28, 0.5);
+	-moz-box-shadow: 10px 10px 5px -5px rgba(28, 28, 28, 0.5);
+	box-shadow: 10px 10px 5px -5px rgba(28, 28, 28, 0.5);
+}
+
+.ref2link-tooltip .table {
+    margin-bottom: 0px;
+    font-size: 12px;
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+.ref2link-tooltip .active td {
+	background-color: transparent !important;
+}
+
+.ref2link-tooltip .table .row {
+	border-bottom: 1px solid #CFCFCF;
+	margin: 0 0 4px 0;
+    cursor: pointer;
+}
+
+.ref2link-tooltip .table .row::before {
+    content: none !important;
+}
+
+.ref2link-tooltip .table .row>* {
+	overflow: hidden;
+}
+
+.ref2link-tooltip .table .row > td {
+    border-top: none;
+    line-height: 20px;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+
+.ref2link-tooltip .table:last-of-type .row:last-of-type {
+	border-bottom-width: 0;
+}
+
+.ref2link-tooltip .table-header {
+    cursor: help;
+}
+
+.ref2link-tooltip .heading {
+	cursor: default;
+}
+
+.ref2link-tooltip .table-header:hover {
+	background-color: inherit !important;
+}
+
+.ref2link-tooltip i[data-action=preview] {
+	min-width: 20px;
+	text-align: center;
+	height: 1.5rem;
+}
+
+.ref2link-tooltip .col-actions>*,
+.ref2link-tooltip i[data-action=preview],
+.ref2link-tooltip i[data-flag] {
+	display: none;
+}
+
+.ref2link-tooltip .active-indicator:hover i[data-action=preview],
+	.ref2link-tooltip .active .col-actions>.rl-link, .ref2link-tooltip .active-indicator:hover .col-actions>.rl-link,
+	.ref2link-tooltip .active [data-flag=active] {
+	display: block;
+}
+
+.ref2link-tooltip .active-indicator:hover i[data-action=preview] {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.ref2link-tooltip .table + .ref2link-tooltip .table:before {
+	display:block;
+	height: 15px;
+	content: " ";
+	clear:both;
+}
+
+/* Linked data CSS */
+.ref2link-tooltip .big {
+	font-size: 13px;
+    font-weight: 400;
+    border-bottom: 1px solid #CFCFCF;
+}
+.ref2link-tooltip .big > td {
+    padding: .5rem;
+}
+
+.ref2link-tooltip .r2l-title {
+    white-space: pre-wrap;
+}
+
+.ref2link-tooltip .r2l-force[data-status=''] {
+    display: none;
+}
+.ref2link-tooltip .r2l-force .bullet {
+    display: inline-block !important;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.ref2link-tooltip .r2l-force .bullet:after {
+    margin-left: 5px;
+}
+.ref2link-tooltip .r2l-force[data-status=pendinginforce] .bullet {
+    background-color: #EDCB09;
+}
+.ref2link-tooltip .r2l-force[data-status=inforce] .bullet {
+    background-color: #628e57;
+}
+.ref2link-tooltip .r2l-force[data-status=notinforce] .bullet {
+    background-color: #CFCFCF;
+}
+.ref2link-tooltip .r2l-force[data-status=nolongerinforce] .bullet {
+    background-color: #da2130;
+}
+
+/* title status CSS */
+.ref2link-tooltip .r2l-title-status[data-status=error] {
+    color: #da2130;
+    margin-top: 5px;
+}
+.ref2link-tooltip .r2l-title-status[data-status=pending] {
+    height: 35px;
+}
+.ref2link-tooltip .r2l-title-status[data-status=info] {
+    margin-top: 5px;
+    opacity: 0.5;
+}
+
+.r2l-loading-bar-spinner.spinner {
+    width: 20px;
+    height: 20px;
+    margin-left: -35px;
+    display: inline-flex;
+    animation: loading-bar-spinner 400ms linear infinite;
+}
+
+.r2l-loading-bar-spinner.spinner .spinner-icon {
+    width: 20px;
+    height: 20px;
+    border:  solid 1px transparent;
+    border-top-color:  #004494 !important;
+    border-left-color: #004494 !important;
+    border-radius: 50%;
+}
+
+@keyframes loading-bar-spinner {
+  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { transform: rotate(360deg); transform: rotate(360deg); }
+}

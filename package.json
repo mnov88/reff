@@ -1,0 +1,35 @@
+{
+    "name": "ref2link",
+    "version": "1.3.29",
+    "description": "Ref2link Core engine",
+    "repository": "https://webgate.ec.europa.eu/CITnet/stash/scm/reftolink/ref2link-core.git",
+    "main": "ref2link.js",
+    "type": "module",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --timeout 30000 --recursive tests/src/unit",
+        "bundle": "yarn run build && node scripts/bundle",
+        "compile": "node compiler/index",
+        "build": "./node_modules/.bin/browserify src/index.js -o ref2link.js -t [ babelify --presets [ @babel/preset-env ] ]"
+    },
+    "author": "EC-SJ",
+    "license": "EUPL-1.2",
+    "dependencies": {
+        "browserify": "^17",
+        "xpath": "^0.0.32",
+        "html-entities": "^1.2.1",
+        "xml-parser": "^1.2.1",
+        "@xmldom/xmldom": "^0.8.6",
+        "xmlhttprequest": "^1.8.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.23.2",
+        "@babel/preset-env": "^7.23.2",
+        "babelify": "^10.0.0",
+        "chai": "^4",
+        "html-to-text": "^5.1.1",
+        "jquery": "^3.4.1",
+        "jsdom": "^22.1.0",
+        "mocha": "^8",
+        "yargs": "^14.0.0"
+    }
+}

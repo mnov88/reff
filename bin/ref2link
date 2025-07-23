@@ -1,0 +1,168 @@
+#!/usr/bin/env node
+
+/**
+ * Ref2Link command-line tool
+ * 
+ * Usage: 
+ *     /> node ref2link --inputtext='T-36/04' --linkeddata=true
+ */
+import fs from 'fs';
+import path from 'path';
+import { performance } from 'perf_hooks';
+import { setArgs } from './lib/index.js';
+import yargsPkg from 'yargs';
+import { fileURLToPath } from 'url';
+import $ from 'jquery';
+import XMLHttpRequestPkg from 'xmlhttprequest';
+import { JSDOM } from "jsdom";
+
+const argv = yargsPkg.argv;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const XMLHttpRequest = XMLHttpRequestPkg.XMLHttpRequest;
+
+const VALID_EXTENSIONS = ["txt", "html", "xml"];
+
+
+/**
+ * Disable logging
+ */
+console.log = console.info = console.debug = console.warn = function () { };
+
+/** 
+ * We setup a virtual DOM using the JSDOM library. This way the Ref2Link library will work exactly as it would in a browser, with all functionality preserved. 
+ * We also expose the JQuery global variable `$`. 
+ * 
+ * Same approach is used with the Webservice integration. 
+ */
+
+/** 
+ * JQuery requires a window.document 
+ */
+const html = '<html><body></body></html>';
+const dom = new JSDOM(html);
+
+global.window = dom.window;
+global.document = dom.window.document;
+global.performance = performance;
+let jQuery = $(dom.window);
+
+global.jQuery = global.$ = jQuery;
+global.$.ajaxSettings.xhr = function () {
+    return new XMLHttpRequest();
+};
+
+const constantsInput = fs.readFileSync(path.resolve(__dirname, "../data/rules.json"), 'utf8');
+const constants = JSON.parse(constantsInput);
+global["R2L_CONSTANTS"] = constants;
+
+
+/**
+ * Arguments:
+    --inputtext       Text to process                                     
+    --input           Path to input file                                   
+    --inputdir        Path to input dir - Will process all files inside  
+    --output          Path to output file                                 
+    --outputdir       Path to output dir - Used with `inputdir`
+    --langsource      Use language specific rules [ISO2] (default=MULTI)
+    --langtarget      Provide tailored target urls [ISO2] 
+    --environment     Comma-separated environments to use (default=*)
+    --ruletype        Comma-separated rules to use
+    --target          Comma-separated targets to use
+    --excludetarget   Comma-separated targets to be excluded
+    --linkeddata      Enable Linked data (default=false)
+    --linkeddatamode  Linked data settings (default=all) 
+                        Example: check-exist,seq-number,metadata,all
+    --htmlmode        Parse input as HTML (default=false)
+    --strictrules     Comma-separated rules to mark as strict. Only available for `eurlex.act`. Example usage: strictrules=eurlex.act
+    --pointintime     Use ELI Point in time. Format: YYYY-MM-DD. defaults to `/oj`
+    */
+
+function getInput() {
+    if (argv.inputtext) {
+        return [{ filename: null, content: argv.inputtext }];
+    }
+
+    if (argv.input) {
+        try {
+            return [{ filename: argv.input, content: fs.readFileSync(argv.input, 'utf8') }];
+        }
+        catch (e) {
+            return [];
+        }
+    }
+    else if (argv.inputdir) {
+        let contents = [];
+        fs.readdirSync(argv.inputdir).forEach(filename => {
+            if (VALID_EXTENSIONS.indexOf(filename.split('.').pop()) === -1) {
+                return;
+            }
+
+            try {
+                contents.push({ filename: filename, content: fs.readFileSync(path.resolve(argv.inputdir, filename), 'utf8') });
+            }
+            catch (e) {
+                contents.push({ filename: filename, content: null });
+            }
+        });
+
+        return contents;
+    }
+
+    return [];
+}
+
+/**
+ * Parse input
+ * @param {string} input 
+ * @param {string} format (html)
+ * @param {Object} options
+ * @param {string} outputFile 
+ */
+function parse(input, format, options, outputFile) {
+    R2L.parse(input, format, options).then((data) => {
+        /**
+         * Send response
+         */
+        if (outputFile) {
+            try {
+                fs.writeFileSync(path.normalize(outputFile), data ? data.result : "");
+            }
+            catch (e) {
+                console.error("Failed to write to file", outputFile);
+            }
+        }
+        else {
+            process.stdout.write(data ? data.result : "");
+        }
+    }, (err) => {
+        console.error("Failed to parse text", err);
+    });
+}
+
+import('../ref2link.js').then(_ => {
+    let inputList = getInput();
+
+    if (inputList.length === 0) {
+        console.error("Failed to read input text");
+        process.exit(1);
+    }
+
+    let options = {};
+
+    /**
+     * Apply filters
+     */
+    setArgs(argv, R2L);
+
+    inputList.forEach(input => {
+        let outputFile = argv.output || null;
+        if (argv.outputdir && input.filename) {
+            let newName = input.filename; //same name
+            outputFile = path.resolve(argv.outputdir, newName);
+        }
+
+        parse(input.content, "html", options, outputFile);
+    })
+});
+
